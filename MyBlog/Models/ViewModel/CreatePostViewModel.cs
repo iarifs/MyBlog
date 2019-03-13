@@ -21,5 +21,7 @@ namespace MyBlog.Models.ViewModel
 
         public HttpPostedFileBase Media {get;set;}
 
+        public bool Published { get; set; }
+
     }
 }

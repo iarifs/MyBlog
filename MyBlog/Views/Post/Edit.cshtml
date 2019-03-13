@@ -39,7 +39,7 @@
         <div class="form-group">
             <div class="input-group">
                 <span class="input-group-addon">Image</span>
-                <input class="form-control" type="file" name="Media" data-val="true"/>
+                <input class="form-control" type="file" name="Media" data-val="true" />
             </div>
         </div>
 
@@ -49,6 +49,14 @@
                 @Html.TextAreaFor(p => p.Body, new { @class = "form-control", id = "post-body", placeholder = "Post Body" })
             </div>
         </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Publish </span>
+                @Html.CheckBoxFor(p => p.Published, new { @class = "check-box" })
+            </div>
+        </div>
+
+
         <button type="submit" id="form-submit" class="btn btn-primary">Update</button>
     </form>
 </div>

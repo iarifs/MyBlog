@@ -37,6 +37,7 @@ namespace MyBlog.Controllers
                     AuthorName = p.Author,
                     MediaUrl = p.MediaUrl,
                     Created = p.DateCreated,
+                    Updated = p.DateUpdated,
                 }).ToList();
 
             return View(model);
@@ -66,7 +67,6 @@ namespace MyBlog.Controllers
                 return RedirectToAction(nameof(PostController.Index));
             }
 
-            var userId = User.Identity.GetUserId();
 
             var post = DbContext.Posts.FirstOrDefault(p => p.Id == id);
 
@@ -186,12 +186,14 @@ namespace MyBlog.Controllers
                     {
                         return RedirectToAction(nameof(PostController.Index));
                     }
+                    post.DateUpdated = DateTime.Now;
                 }
 
                 post.Title = formData.Title;
                 post.Body = formData.Body;
                 post.UserId = userId;
                 post.Author = userName;
+                post.Published = formData.Published;
 
 
                 if (formData.Media != null)

@@ -21,8 +21,12 @@
                 <div class="card mb-4">
                     <a href="@Url.Action("Details","Post",new { id = post.Id})"><h2 class="card-title">@post.Title</h2></a>
                     <div class="card-footer text-muted">
-                        <span class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @post.AuthorName </span>&nbsp;&nbsp;&nbsp;
-                        <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @post.Created.ToString("dddd dd-MMMM-yyyy")</span>
+                        <span class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @post.AuthorName </span>&nbsp;
+                        <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @post.Created.ToString("dd-MMMM-yyyy")</span>
+                        @if (post.Updated != null)
+                        {
+                            <span> <i class="far fa-clock"></i> &nbsp;Updated On&nbsp; @(post.Updated?.ToString("dd-MMMM-yyyy 'at' HH:mm:ss"))</span>
+                        }
                     </div>
                     <img class="card-img-top img-responsive" src="@Url.Content(post.MediaUrl)" alt="Card image cap">
 
