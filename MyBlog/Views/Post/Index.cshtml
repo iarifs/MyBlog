@@ -1,0 +1,35 @@
+﻿@model List<ListAllPostViewModel>
+
+@{
+    ViewBag.Title = "Welcome to my Blog App";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link href="~/Content/blog-home.css" rel="stylesheet" />
+
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <!-- Blog Post -->
+            @foreach (var post in Model)
+            {
+                <div class="card mb-4">
+                    <h2 class="card-title">@post.Title</h2>
+                    <div class="card-footer text-muted">
+                        <p class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @post.AuthorName </p>
+                        <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @post.Created.ToString("dddd dd-MMMM-yyyy")</span>
+                    </div>
+                    <img class="card-img-top img-responsive" src="@Url.Content(post.MediaUrl)" alt="Card image cap">
+
+                    <div class="card-body">
+                        <p class="card-text">@Html.Raw(post.Body.Remove(post.Body.Count() / 4)) <i class="fas fa-ellipsis-h"></i></p>
+                        <a href="@Url.Action("Details","Post",new { id = post.Id})" class="btn btn-primary">Read More&nbsp;<i class="fas fa-arrow-right"></i> </a>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</div>

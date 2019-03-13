@@ -1,0 +1,38 @@
+﻿@model List<ListAllPostViewModel>
+
+@{
+    ViewBag.Title = "PostLists";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<link href="https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou" rel="stylesheet">
+
+<h1 class="list-header">-List of All Post-</h1>
+
+@foreach (var item in Model)
+{
+    <!-- Buttons -->
+    <h3 class="list-heading">
+        <a href="#">@item.Title</a>
+    </h3>
+    <ul class="list-unstyled list-inline list-btn">
+
+        @if (User.IsInRole("Admin"))
+
+        {
+            <li>
+                <a class="btn btn-primary" href=@Url.Action("Edit", "Post", new { Id = item.Id })>
+                    Edit&ensp;<i class="fas fa-edit"></i>
+                </a>
+            </li>
+            <li>
+                <form method="post" action="@Url.Action("Delete", "Post", new { Id = item.Id })">
+                    <button type="submit" class="btn btn-danger">
+                        Delete&ensp;<i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </li>
+        }
+    </ul>
+}

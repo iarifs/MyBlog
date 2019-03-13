@@ -1,0 +1,32 @@
+﻿@model PostDetails
+
+@{
+    ViewBag.Title = "Post-details";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link href="~/Content/blog-home.css" rel="stylesheet" />
+
+
+<div class="container">
+    <div class="row">
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <!-- Title -->
+            <h1 class="card-title">@Model.Title</h1>
+
+            <div class="card-footer text-muted">
+                <p class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @Model.AuthorName </p>
+                <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @Model.Created.ToString("dddd dd-MMMM-yyyy")</span>
+            </div>
+            <!-- Preview Image -->
+            <img class="img-fluid img-responsive rounded" src="@Url.Content(Model.MediaUrl)" alt="">
+            <hr>
+            <!-- Post Content -->
+            <p class="lead">@Html.Raw(Model.Body)</p>
+
+            <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="fas fa-long-arrow-alt-left"></i> Back to Home </a>
+        </div>
+    </div>
+</div>
+

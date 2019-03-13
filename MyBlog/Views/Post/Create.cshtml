@@ -1,0 +1,51 @@
+﻿@model  CreatePostViewModel
+
+
+@{
+    ViewBag.Title = "Create";
+}
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.js"></script>
+    <script src="~/Content/TinyMCE.js"></script>
+
+    <script type="text/javascript">
+        $.validator.setDefaults({
+            ignore: ""
+        });
+
+    </script>
+}
+<div class="wrapper">
+
+    <h2 class="main-heading"> Create Post</h2>
+
+
+    <form method="post" enctype="multipart/form-data">
+        @Html.ValidationSummary(false, "", new { @class = "error-message" })
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Title</span>
+                @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Post Title" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Image</span>
+                <input class="form-control" type="file" name="Media" data-val="true" data-val-required="The image field is required." />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Body</span>
+                @Html.TextAreaFor(p => p.Body, new { @class = "form-control", id = "post-body", placeholder = "Post Body" })
+            </div>
+        </div>
+        <button type="submit" id="form-submit" class="btn btn-primary">Publish</button>
+    </form>
+</div>
