@@ -18,6 +18,10 @@
             <div class="card-footer text-muted">
                 <p class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @Model.AuthorName </p>
                 <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @Model.Created.ToString("dddd dd-MMMM-yyyy")</span>
+                @if (Model.Updated != null)
+                {
+                    <span> <i class="far fa-clock"></i> &nbsp;Updated On&nbsp; @(Model.Updated?.ToString("dd-MMMM-yyyy 'at' HH:mm:ss"))</span>
+                }
             </div>
             <!-- Preview Image -->
             <img class="img-fluid img-responsive rounded" src="@Url.Content(Model.MediaUrl)" alt="">

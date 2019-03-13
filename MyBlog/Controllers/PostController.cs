@@ -96,11 +96,6 @@ namespace MyBlog.Controllers
             return RedirectToAction(nameof(PostController.PostLists));
         }
 
-        public ActionResult PostDetails(int? id)
-        {
-            return null;
-        }
-
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult PostLists()
@@ -145,6 +140,7 @@ namespace MyBlog.Controllers
             model.MediaUrl = post.MediaUrl;
             model.AuthorName = post.Author;
             model.Created = post.DateCreated;
+            model.Updated = post.DateUpdated;
 
             return View(model);
         }

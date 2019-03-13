@@ -12,7 +12,7 @@ namespace MyBlog.Models.ViewModel
         public string Body { get; set; }
         public string AuthorName { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+        public DateTime? Updated { get; set; }
         public string MediaUrl { get; set; }
     }
 }
