@@ -14,5 +14,6 @@ namespace MyBlog.Models.ViewModel
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
         public string MediaUrl { get; set; }
+        public bool Published { get; set; }
     }
 }

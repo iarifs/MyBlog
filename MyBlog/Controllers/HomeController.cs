@@ -26,6 +26,7 @@ namespace MyBlog.Controllers
                  MediaUrl = p.MediaUrl,
                  Created = p.DateCreated,
                  Updated = p.DateUpdated,
+                 Published = p.Published,
              }).ToList();
 
             return View(model);

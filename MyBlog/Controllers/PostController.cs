@@ -38,6 +38,7 @@ namespace MyBlog.Controllers
                     MediaUrl = p.MediaUrl,
                     Created = p.DateCreated,
                     Updated = p.DateUpdated,
+                    Published = p.Published,
                 }).ToList();
 
             return View(model);
@@ -150,16 +151,6 @@ namespace MyBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!id.HasValue)
-                {
-                    if (DbContext.Posts.Any(p => p.Title == formData.Title))
-                    {
-                        ModelState.AddModelError(nameof(Post.Title), "Post Title should be unique!");
-                        return View();
-                    }
-                }
-
-
                 Post post;
 
                 var userId = User.Identity.GetUserId();
