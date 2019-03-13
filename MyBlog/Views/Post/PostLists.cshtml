@@ -13,9 +13,9 @@
 @foreach (var item in Model)
 {
     <!-- Buttons -->
-    <h3 class="list-heading">
-        <a href="#">@item.Title</a>
-    </h3>
+<h3 class="list-heading">
+    <a href="@Url.Action("Details","Post",new { id = item.Id})"><h2 class="card-title">@item.Title</h2></a>
+</h3>
     <ul class="list-unstyled list-inline list-btn">
 
         @if (User.IsInRole("Admin"))
