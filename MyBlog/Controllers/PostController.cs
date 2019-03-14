@@ -40,6 +40,7 @@ namespace MyBlog.Controllers
                     Created = p.DateCreated,
                     Updated = p.DateUpdated,
                     Published = p.Published,
+                    Slug = p.Slug,
                 }).ToList();
             return View(model);
         }
@@ -110,6 +111,7 @@ namespace MyBlog.Controllers
                  AuthorName = p.Author,
                  MediaUrl = p.MediaUrl,
                  Created = p.DateCreated,
+                 Slug = p.Slug,
              }).ToList();
             return View(model);
         }
