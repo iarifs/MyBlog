@@ -27,6 +27,7 @@ namespace MyBlog.Controllers
                  Created = p.DateCreated,
                  Updated = p.DateUpdated,
                  Published = p.Published,
+                 Slug = p.Slug,
              }).ToList();
 
             return View(model);

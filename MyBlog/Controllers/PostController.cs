@@ -4,6 +4,7 @@ using MyBlog.Models.Domain;
 using MyBlog.Models.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -40,7 +41,6 @@ namespace MyBlog.Controllers
                     Updated = p.DateUpdated,
                     Published = p.Published,
                 }).ToList();
-
             return View(model);
         }
 
@@ -146,12 +146,48 @@ namespace MyBlog.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Route("blog/{slug}")]
+        public ActionResult DetailsBySlug(string slug)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                return RedirectToAction(nameof(PostController.Index));
+            }
+
+            var post = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
+
+            if (post == null)
+            {
+                return RedirectToAction(nameof(PostController.Index));
+            }
+            var model = new PostDetails();
+            model.Title = post.Title;
+            model.Body = post.Body;
+            model.MediaUrl = post.MediaUrl;
+            model.AuthorName = post.Author;
+            model.Created = post.DateCreated;
+            model.Updated = post.DateUpdated;
+            model.Slug = post.Slug;
+
+            return View("Details", model);
+        }
+
+
         //private method to handle create post and edit postSS
         private ActionResult ContentCreator(int? id, CreatePostViewModel formData)
         {
             if (ModelState.IsValid)
             {
                 Post post;
+                Random random = new Random();
+                string GeneratedSlug = SlugGenerator.GenerateSlug(formData.Title);
+
+                //checking our slug
+                //if there is same slug present in our database
+                //it will add extra random number 
+                //
+                var finalSlug = DbContext.Posts.Any(p => p.Slug == GeneratedSlug) ? GeneratedSlug + "-" + random.Next(100): GeneratedSlug;
 
                 var userId = User.Identity.GetUserId();
                 //gettting the username by user identity class and get username function
@@ -162,7 +198,7 @@ namespace MyBlog.Controllers
                 {
                     post = new Post
                     {
-                        UserId = userId
+                        Slug = finalSlug,
                     };
                     DbContext.Posts.Add(post);
                 }

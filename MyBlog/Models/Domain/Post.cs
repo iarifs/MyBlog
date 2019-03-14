@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace MyBlog.Models.Domain
@@ -18,10 +19,12 @@ namespace MyBlog.Models.Domain
         public virtual ApplicationUser User { get; set; }
         public string Author { get; set; }
         public string MediaUrl { get; set; }
+        public string Slug { get; set; }
 
         public Post()
         {
             DateCreated = DateTime.Now;
         }
+
     }
 }
