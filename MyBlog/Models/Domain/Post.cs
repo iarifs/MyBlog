@@ -20,6 +20,7 @@ namespace MyBlog.Models.Domain
         public string Author { get; set; }
         public string MediaUrl { get; set; }
         public string Slug { get; set; }
+        public virtual List<Comment> Comments { get; set; }
 
         public Post()
         {

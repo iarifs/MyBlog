@@ -1,0 +1,22 @@
+﻿@model List<ListComment>
+@{
+    ViewBag.Title = "_ListOfComments";
+}
+
+@foreach (var item in Model)
+{
+    <ol class="list-unstyled comment-list">
+        <li class="comment-item media well well-sm">
+            <h5 class="media-heading">
+
+                <small>
+                    @item.DateCreated
+                </small>
+            </h5>
+            <p class="comment-body">
+                @item.Body
+            </p>
+        </li>
+    </ol>
+}
+

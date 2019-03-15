@@ -4,6 +4,16 @@
     ViewBag.Title = "Post-details";
 }
 
+@section scripts{
+    <script>
+        //Hide our text box from the beganing
+        $("#comment-box").hide();
+        $("#commentbox-toggle").click(function () {
+            $("#comment-box").toggle(1000);
+        });
+    </script>
+}
+
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link href="~/Content/blog-home.css" rel="stylesheet" />
 
@@ -29,8 +39,65 @@
             <!-- Post Content -->
             <p class="lead">@Html.Raw(Model.Body)</p>
 
-            <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="fas fa-long-arrow-alt-left"></i> Back to Home </a>
+            <div class="post-buttons">
+                <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="fas fa-long-arrow-alt-left"></i> Back to Home </a>
+
+                <button id="commentbox-toggle" class="btn btn-primary">
+                    <i class="fas fa-comment"></i>&nbsp;Add Comment
+                </button>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=#url" class="btn btn-primary">
+                    <i class="fas fa-share"></i> &nbsp;Share
+                </a>
+            </div>
+            <hr />
+
+            <!-- Comment Lists-->
+
+            @foreach (var item in Model.Comments)
+            {
+                <ol class="list-unstyled comment-list">
+                    <li class="comment-item media well well-sm">
+                        <span class="font-italic"> <i class="fas fa-user"></i>&nbsp;@item.User </span>&nbsp;
+                        <span> <i class="far fa-clock"></i> &nbsp;@item.DateCreated.ToString("dd-MMMM-yyyy 'at' HH:mm:ss")</span>
+                        @if (item.DateUpdated != null)
+                        {
+                            <span> <i class="far fa-clock"></i> &nbsp;Updated On&nbsp; @(item.DateUpdated?.ToString("dd-mm-yyyy 'at' HH:mm:ss"))</span>
+                        }
+                        <p class="comment-body">
+                            @item.Body
+                        </p>
+                    </li>
+                </ol>
+            }
+            <!--Commnet Box-->
+            <div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="well" id="comment-box">
+                        <h4>Leave a comment</h4>
+                        <form role="form" class="clearfix" method="post" action="@Url.Action("Create","Comment",new {slug = Model.Slug})">
+                            <div class="col-md-12 form-group">
+                                @Html.TextAreaFor(p => p.CommentBody, new { @class = "form-control", id = "Comment-body", rows = "6", placeholder = "Comment here" })
+                            </div>
+                            <div class="col-md-12 form-group text-left">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="well" id="login-box">
+                        <h4>
+                            <i class="fas fa-sign-in-alt"></i> <a href="/Account/Login">Log in</a>
+                            to Comment
+                        </h4>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
+
+
 

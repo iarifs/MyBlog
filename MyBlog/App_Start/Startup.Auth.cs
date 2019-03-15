@@ -4,6 +4,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+using Owin.Security.Providers.GitHub;
+using Owin.Security.Providers.Slack;
+using Owin.Security.Providers.LinkedIn;
 using Owin;
 using MyBlog.Models;
 
@@ -34,7 +37,7 @@ namespace MyBlog
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -46,22 +49,32 @@ namespace MyBlog
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseMicrosoftAccountAuthentication(
+                clientId: "5dbc8cc3-b731-46e2-84a9-a9633633c6a4",
+                clientSecret: "xkjruYBBKH8289$}qhZF1;+");
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
 
             //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            //   appId: "328589574471928",
+            //   appSecret: "dd21edb05214fe608b0de05fb0def3d9");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "975943826724-5uh16gth51v8fl3uqb1epqo99ocpcd56.apps.googleusercontent.com",
+                ClientSecret = "aqvHSUEgZMtXU3MtfO7mHe_b"
+            });
+
+            app.UseGitHubAuthentication("4a09496e48f550c1587f", "62842fffb63903cdaadc59d3aa9d896799f0f6c1");
+
+
+            //app.UseSlackAuthentication(new SlackAuthenticationOptions
             //{
-            //    ClientId = "",
-            //    ClientSecret = ""
+            //    Scope = { "identity.basic", "identity.email" },
+            //    ClientId = "416404585908.578504101334",
+            //    ClientSecret = "0cfecf3c278c032cbbea281ad2d7fa1b"
             //});
         }
     }

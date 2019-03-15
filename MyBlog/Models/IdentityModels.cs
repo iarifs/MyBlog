@@ -12,6 +12,7 @@ namespace MyBlog.Models
     public class ApplicationUser : IdentityUser
     {
         public virtual List<Post> Posts { get; set; }
+        public virtual List<Comment> Comments { get; set; }
 
         public ApplicationUser()
         {
@@ -35,7 +36,7 @@ namespace MyBlog.Models
         {
         }
         public virtual DbSet<Post> Posts { get; set; }
-
+        public virtual DbSet<Comment> Comments { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

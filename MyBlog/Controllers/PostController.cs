@@ -28,7 +28,6 @@ namespace MyBlog.Controllers
         // GET: Post
         public ActionResult Index()
         {
-
             var model = DbContext.Posts
                 .Select(p => new ListAllPostViewModel
                 {
@@ -138,6 +137,7 @@ namespace MyBlog.Controllers
             }
 
             var model = new PostDetails();
+            model.Id = post.Id;
             model.Title = post.Title;
             model.Body = post.Body;
             model.MediaUrl = post.MediaUrl;
@@ -164,6 +164,7 @@ namespace MyBlog.Controllers
                 return RedirectToAction(nameof(PostController.Index));
             }
             var model = new PostDetails();
+            model.Id = post.Id;
             model.Title = post.Title;
             model.Body = post.Body;
             model.MediaUrl = post.MediaUrl;
@@ -171,10 +172,16 @@ namespace MyBlog.Controllers
             model.Created = post.DateCreated;
             model.Updated = post.DateUpdated;
             model.Slug = post.Slug;
+            model.Comments = DbContext.Comments
+                    .Where(p => p.Slug == slug)
+                    .Select(p => new CommentDetails
+                    {
+                        Body = p.Body,
+                        DateCreated = p.CommentCreated,
+                    }).ToList();
 
             return View("Details", model);
         }
-
 
         //private method to handle create post and edit postSS
         private ActionResult ContentCreator(int? id, CreatePostViewModel formData)
@@ -189,7 +196,7 @@ namespace MyBlog.Controllers
                 //if there is same slug present in our database
                 //it will add extra random number 
                 //
-                var finalSlug = DbContext.Posts.Any(p => p.Slug == GeneratedSlug) ? GeneratedSlug + "-" + random.Next(100): GeneratedSlug;
+                var finalSlug = DbContext.Posts.Any(p => p.Slug == GeneratedSlug) ? GeneratedSlug + "-" + random.Next(100) : GeneratedSlug;
 
                 var userId = User.Identity.GetUserId();
                 //gettting the username by user identity class and get username function
