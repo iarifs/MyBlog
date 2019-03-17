@@ -53,14 +53,27 @@
     font-style: italic;
 }
 
-/*
+.searchbox-wrapper {
+    margin-left: 55%
+}
+
+.searchbox {
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+.comment-edit{
+    display:inline-block;
+    position:absolute;
+    left:70%;
+}
+    /*
 DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
 */
+    @import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
 
-@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
-
-@-moz-keyframes rocket-movement {
-    100% {
+    @-moz-keyframes rocket-movement {
+        100% {
         -moz-transform: translate(1200px,-600px);
     }
 }
@@ -371,8 +384,6 @@ ul {
 }
 
 /*setting blog styles*/
-
-
 
 .text-center {
     box-shadow: -2px 5px 24px -3px rgba(40,89,33,1);

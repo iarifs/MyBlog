@@ -16,6 +16,7 @@ namespace MyBlog.Models
         public string Slug { get; set; }
         public Post Post { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public string UserName { get; set; }
 
         public Comment()
         {

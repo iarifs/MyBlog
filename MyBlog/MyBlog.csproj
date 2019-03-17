@@ -369,7 +369,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PostController.cs" />
@@ -581,8 +580,8 @@
     <Content Include="Views\Shared\_SharedForm.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Details.cshtml" />
-    <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Shared\_PostListPartial.cshtml" />
+    <Content Include="Views\Post\SearchPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

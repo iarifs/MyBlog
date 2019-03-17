@@ -15,6 +15,7 @@ namespace MyBlog.Models.ViewModel
 
         public DateTime? CommentUpdates { get; set; }
         
+        public string UserName { get; set; }
         public CreateComment()
         {
             CommentCreated = DateTime.Now;

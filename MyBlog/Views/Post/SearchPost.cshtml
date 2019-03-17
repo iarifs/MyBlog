@@ -1,0 +1,40 @@
+﻿
+@model List<PostDetails>
+
+@{
+    ViewBag.Title = "Searched-items";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+@if (ViewBag.notFound)
+{
+    <blockquote>
+       No Result found  for:<mark>@ViewBag.query</mark>
+    </blockquote>
+}
+
+
+@foreach (var post in Model)
+{
+    <blockquote>
+        Displaying Result for:<mark>@ViewBag.query</mark>
+    </blockquote>
+    <div class="card mb-4">
+        <a href="@Url.Action("DetailsBySlug", "Post", new { slug = post.Slug })"><h2 class="card-title">@post.Title</h2></a>
+        <div class="card-footer text-muted">
+            <span class="font-italic"> <i class="fas fa-user"></i>&nbsp; By&nbsp; @post.AuthorName </span>&nbsp;
+            <span> <i class="far fa-clock"></i> &nbsp;Posted On&nbsp; @post.Created.ToString("dd-MMMM-yyyy")</span>
+            @if (post.Updated != null)
+            {
+                <span> <i class="far fa-clock"></i> &nbsp;Updated On&nbsp; @(post.Updated?.ToString("dd-MMMM-yyyy 'at' HH:mm:ss"))</span>
+            }
+        </div>
+        <img class="card-img-top img-responsive" src="@Url.Content(post.MediaUrl)" alt="Card image cap">
+
+        <div class="card-body">
+            <p class="card-text">@Html.Raw(post.Body.Remove(post.Body.Count() / 4)) <i class="fas fa-ellipsis-h"></i></p>
+            <a href="@Url.Action("DetailsBySlug", "Post", new { slug = post.Slug })" class="btn btn-primary">Read More&nbsp;<i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+}

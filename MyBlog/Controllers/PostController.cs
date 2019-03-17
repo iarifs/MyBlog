@@ -144,7 +144,6 @@ namespace MyBlog.Controllers
             model.AuthorName = post.Author;
             model.Created = post.DateCreated;
             model.Updated = post.DateUpdated;
-
             return View(model);
         }
 
@@ -163,6 +162,7 @@ namespace MyBlog.Controllers
             {
                 return RedirectToAction(nameof(PostController.Index));
             }
+
             var model = new PostDetails();
             model.Id = post.Id;
             model.Title = post.Title;
@@ -176,12 +176,69 @@ namespace MyBlog.Controllers
                     .Where(p => p.Slug == slug)
                     .Select(p => new CommentDetails
                     {
+                        Id = p.Id,
                         Body = p.Body,
                         DateCreated = p.CommentCreated,
+                        DateUpdated = p.CommentUpdated,
+                        Reason = p.UpdatedReason,
+                        UserName = p.UserName
                     }).ToList();
 
             return View("Details", model);
         }
+
+        //Creating Comment in our apps
+        [HttpPost]
+        public ActionResult CreateComment(string slug, CreateComment formData)
+        {
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                Response.StatusCode = 404;
+                return View();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            Comment comment;
+            comment = new Comment();
+            comment.Body = formData.CommentBody;
+            comment.CommentCreated = formData.CommentCreated;
+            comment.Slug = slug;
+            comment.UserName = User.Identity.GetUserName();
+            DbContext.Comments.Add(comment);
+            DbContext.SaveChanges();
+
+            return RedirectToAction("DetailsBySlug", "Post", new { slug = slug });
+        }
+
+        //For Editing our Comment
+        [HttpPost]
+        [Route("blog/{slug}")]
+        public ActionResult DetailsBySlug(int Id, PostDetails formdata)
+        {
+
+            var commnet = DbContext.Comments.FirstOrDefault(p => p.Id == Id);
+
+            commnet.Body = formdata.UpdatedComment;
+            commnet.UpdatedReason = formdata.UpdateReason;
+            commnet.CommentUpdated = DateTime.Now;
+            DbContext.SaveChanges();
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
+        //For Deleting our Commnet
+
+        [HttpPost]
+        public ActionResult DeleteComment(int Id)
+        {
+            var commnet = DbContext.Comments.FirstOrDefault(p => p.Id == Id);
+            DbContext.Comments.Remove(commnet);
+            DbContext.SaveChanges();
+            return Redirect(Request.UrlReferrer.PathAndQuery);
+        }
+
 
         //private method to handle create post and edit postSS
         private ActionResult ContentCreator(int? id, CreatePostViewModel formData)
@@ -195,7 +252,7 @@ namespace MyBlog.Controllers
                 //checking our slug
                 //if there is same slug present in our database
                 //it will add extra random number 
-                //
+
                 var finalSlug = DbContext.Posts.Any(p => p.Slug == GeneratedSlug) ? GeneratedSlug + "-" + random.Next(100) : GeneratedSlug;
 
                 var userId = User.Identity.GetUserId();
@@ -260,6 +317,37 @@ namespace MyBlog.Controllers
             DbContext.SaveChanges();
 
             return RedirectToAction(nameof(PostController.Index));
+        }
+
+        [HttpPost]
+        public ActionResult SearchPost(string query)
+        {
+            var foundQueryList = DbContext.Posts
+                .Where(
+                post => post.Slug.Contains(query) ||
+                post.Title.Contains(query) ||
+                post.Body.Contains(query)
+                )
+                .Select(p => new PostDetails
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Body = p.Body,
+                    MediaUrl = p.MediaUrl,
+                    AuthorName = p.Author,
+                    Slug = p.Slug,
+                    Created = p.DateCreated,
+                    Updated = p.DateUpdated,
+                }).ToList();
+            ViewBag.query = query;
+            ViewBag.notFound = false;
+            if (foundQueryList.Count == 0)
+            {
+                ViewBag.notFound = true;
+            }
+
+
+            return View(foundQueryList);
         }
     }
 }

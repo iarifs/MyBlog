@@ -6,8 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-
+    <link href="~/Content/Styles.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,6 +28,17 @@
                         <li>@Html.ActionLink("New Post", "Create", "Post")</li>
                         <li>@Html.ActionLink("Post Lists", "PostLists", "Post")</li>
                     }
+                    <li>
+                        @using (Html.BeginForm("SearchPost", "Post",FormMethod.Post, new { @class = "searchbox-wrapper" }))
+                        {
+                            <span class="input-group-addon">
+                                <input class="searchbox" type="text" name="query" required placeholder="Search..">
+                            </span>
+                            <span class="input-group-addon">
+                                <button class="btn"> <i class="fas fa-search"></i></button>
+                            </span>
+                        }
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

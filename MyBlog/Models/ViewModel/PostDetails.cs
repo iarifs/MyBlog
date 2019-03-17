@@ -17,7 +17,14 @@ namespace MyBlog.Models.ViewModel
         public string MediaUrl { get; set; }
         public string Slug { get; set; }
 
+        [Required(ErrorMessage = "Please give some comment")]
         public string CommentBody { get; set; }
+
+        [Required(ErrorMessage = "Update comment needed")]
+        public string UpdatedComment { get; set; }
+
+        [Required(ErrorMessage = "Reason Needed")]
+        public string UpdateReason { get; set; }
 
         public List<CommentDetails> Comments { get; set; }
 

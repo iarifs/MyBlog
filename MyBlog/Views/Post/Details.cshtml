@@ -5,18 +5,22 @@
 }
 
 @section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         //Hide our text box from the beganing
         $("#comment-box").hide();
         $("#commentbox-toggle").click(function () {
             $("#comment-box").toggle(1000);
         });
+
+        function hideAndShow(form) {
+            $('#' + form).toggle(1000);
+        }
+
     </script>
 }
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link href="~/Content/blog-home.css" rel="stylesheet" />
-
 
 <div class="container">
     <div class="row">
@@ -43,7 +47,9 @@
                 <a href="@Url.Action("Index","Home")" class="btn btn-primary"><i class="fas fa-long-arrow-alt-left"></i> Back to Home </a>
 
                 <button id="commentbox-toggle" class="btn btn-primary">
-                    <i class="fas fa-comment"></i>&nbsp;Add Comment
+                    <i class="fas fa-comment">
+                    </i>
+                    &nbsp;Add Comment
                 </button>
                 <a href="https://www.facebook.com/sharer/sharer.php?u=#url" class="btn btn-primary">
                     <i class="fas fa-share"></i> &nbsp;Share
@@ -56,16 +62,76 @@
             @foreach (var item in Model.Comments)
             {
                 <ol class="list-unstyled comment-list">
+
                     <li class="comment-item media well well-sm">
-                        <span class="font-italic"> <i class="fas fa-user"></i>&nbsp;@item.User </span>&nbsp;
-                        <span> <i class="far fa-clock"></i> &nbsp;@item.DateCreated.ToString("dd-MMMM-yyyy 'at' HH:mm:ss")</span>
+                        <span class="font-italic">
+                            <i class="fas fa-user">
+                            </i>&nbsp;
+                            @item.UserName
+                        </span>&nbsp;
+
+                        <span>
+                            <i class="far fa-clock"></i> &nbsp;
+                            @item.DateCreated.ToString("dd-MMMM-yyyy 'at' HH:mm:ss")
+                        </span>
+
+                        <ul class="comment-edit list-unstyled list-inline list-btn">
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+
+                            {
+                                <li>
+                                    <a class="btn btn-primary" id="edit-box-toggle-@item.Id" onclick=hideAndShow("edit-box-@item.Id")>
+                                        Edit&ensp;<i class="fas fa-edit"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <form method="post" action="@Url.Action( "DeleteComment", "Post" , new { Id=item.Id })">
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete&ensp;<i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </li>
+                            }
+                        </ul>
+
                         @if (item.DateUpdated != null)
                         {
-                            <span> <i class="far fa-clock"></i> &nbsp;Updated On&nbsp; @(item.DateUpdated?.ToString("dd-mm-yyyy 'at' HH:mm:ss"))</span>
+                            <p>
+                                <small>
+                                    <i class="far fa-clock"></i> &nbsp;Updated On&nbsp;
+                                    @(item.DateUpdated?.ToString("dd-MMMM-yyyy 'at' HH:mm:ss")
+                                    )
+                                    &nbsp;
+                                    &nbsp;
+                                    &nbsp;
+                                    <span class="error-message">|||Reason||| = @item.Reason</span>
+                                </small>
+                            </p>
+
                         }
                         <p class="comment-body">
                             @item.Body
                         </p>
+                        <!--This box is for comment data-->
+                        <form id="edit-box-@item.Id" style="display:none" method="post" action="@Url.Action("DetailsBySlug", "Post" , new { Id=item.Id })">
+                            @Html.ValidationSummary(false, "", new { @class = "error-message" })
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Updated</span>
+                                    @Html.TextBoxFor(p => p.UpdatedComment, new { Value = item.Body, @class = "form-control", placeholder = "Updated-Comment" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Reason</span>
+                                    @Html.TextBoxFor(p => p.UpdateReason, new { @class = "form-control", placeholder = "Update-Reason" })
+                                </div>
+                            </div>
+                            <button style="margin-left: 20px" ; class="btn bg-primary">
+                                Update
+                            </button>
+                        </form>
                     </li>
                 </ol>
             }
@@ -75,7 +141,9 @@
                 {
                     <div class="well" id="comment-box">
                         <h4>Leave a comment</h4>
-                        <form role="form" class="clearfix" method="post" action="@Url.Action("Create","Comment",new {slug = Model.Slug})">
+                        <form role="form" class="clearfix" method="post" action="@Url.Action("CreateComment","Post",new {slug=Model.Slug})">
+
+                            @Html.ValidationSummary(false, "", new { @class = "error-message" })
                             <div class="col-md-12 form-group">
                                 @Html.TextAreaFor(p => p.CommentBody, new { @class = "form-control", id = "Comment-body", rows = "6", placeholder = "Comment here" })
                             </div>

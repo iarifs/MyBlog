@@ -26,7 +26,8 @@ namespace MyBlog
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/Styles.css"));
+                      "~/Content/Styles.css",
+                      "~/Content/blog-home.css"));
         }
     }
 }
