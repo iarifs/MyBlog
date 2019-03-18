@@ -114,24 +114,27 @@
                             @item.Body
                         </p>
                         <!--This box is for comment data-->
-                        <form id="edit-box-@item.Id" style="display:none" method="post" action="@Url.Action("DetailsBySlug", "Post" , new { Id=item.Id })">
-                            @Html.ValidationSummary(false, "", new { @class = "error-message" })
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Updated</span>
-                                    @Html.TextBoxFor(p => p.UpdatedComment, new { Value = item.Body, @class = "form-control", placeholder = "Updated-Comment" })
+                        @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                        {
+                            <form id="edit-box-@item.Id" style="display:none" method="post" action="@Url.Action("DetailsBySlug", "Post" , new { Id=item.Id })">
+                                @Html.ValidationSummary(false, "", new { @class = "error-message" })
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Updated</span>
+                                        @Html.TextBoxFor(p => p.UpdatedComment, new { Value = item.Body, @class = "form-control", placeholder = "Updated-Comment" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Reason</span>
-                                    @Html.TextBoxFor(p => p.UpdateReason, new { @class = "form-control", placeholder = "Update-Reason" })
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Reason</span>
+                                        @Html.TextBoxFor(p => p.UpdateReason, new { @class = "form-control", placeholder = "Update-Reason" })
+                                    </div>
                                 </div>
-                            </div>
-                            <button style="margin-left: 20px" ; class="btn bg-primary">
-                                Update
-                            </button>
-                        </form>
+                                <button style="margin-left: 20px" ; class="btn bg-primary">
+                                    Update
+                                </button>
+                            </form>
+                        }
                     </li>
                 </ol>
             }
