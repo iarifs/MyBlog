@@ -14,22 +14,22 @@ namespace MyBlog.Controllers
 
         public ActionResult Index()
         {
+            bool IsAdmin = User.IsInRole("Admin");
 
             var model = DbContext.Posts
-             .OrderByDescending(p => p.Id)
-             .Select(p => new ListAllPostViewModel
-             {
-                 Id = p.Id,
-                 Title = p.Title,
-                 Body = p.Body,
-                 AuthorName = p.Author,
-                 MediaUrl = p.MediaUrl,
-                 Created = p.DateCreated,
-                 Updated = p.DateUpdated,
-                 Published = p.Published,
-                 Slug = p.Slug,
-             }).ToList();
-
+                .Where(p => (IsAdmin ? true : p.Published))
+                .Select(p => new ListAllPostViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Body = p.Body,
+                    AuthorName = p.Author,
+                    MediaUrl = p.MediaUrl,
+                    Created = p.DateCreated,
+                    Updated = p.DateUpdated,
+                    Published = p.Published,
+                    Slug = p.Slug,
+                }).ToList();
             return View(model);
         }
 

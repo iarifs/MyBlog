@@ -28,7 +28,10 @@ namespace MyBlog.Controllers
         // GET: Post
         public ActionResult Index()
         {
+            bool IsAdmin = User.IsInRole("Admin");
+
             var model = DbContext.Posts
+                .Where(p => (IsAdmin ? true : p.Published))
                 .Select(p => new ListAllPostViewModel
                 {
                     Id = p.Id,
