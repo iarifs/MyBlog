@@ -201,11 +201,21 @@ namespace MyBlog.Controllers
             {
                 return View();
             }
+            var post = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
+
+            if(post == null)
+            {
+                Response.StatusCode = 404;
+                return View();
+            }
+
             Comment comment;
             comment = new Comment();
             comment.Body = formData.CommentBody;
             comment.CommentCreated = formData.CommentCreated;
             comment.Slug = slug;
+            comment.PostId = post.Id;
+            comment.UserId = post.User.Id;
             comment.UserName = User.Identity.GetUserName();
             DbContext.Comments.Add(comment);
             DbContext.SaveChanges();
