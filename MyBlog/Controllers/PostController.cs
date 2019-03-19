@@ -17,9 +17,6 @@ namespace MyBlog.Controllers
     {
         private ApplicationDbContext DbContext;
 
-        public object ClientScript { get; private set; }
-        public Page Page { get; private set; }
-
         public PostController()
         {
             DbContext = new ApplicationDbContext();
