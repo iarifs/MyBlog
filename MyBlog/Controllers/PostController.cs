@@ -26,7 +26,6 @@ namespace MyBlog.Controllers
         public ActionResult Index()
         {
             bool IsAdmin = User.IsInRole("Admin");
-
             var model = DbContext.Posts
                 .Where(p => (IsAdmin ? true : p.Published))
                 .Select(p => new ListAllPostViewModel
@@ -203,7 +202,7 @@ namespace MyBlog.Controllers
             }
             var post = DbContext.Posts.FirstOrDefault(p => p.Slug == slug);
 
-            if(post == null)
+            if (post == null)
             {
                 Response.StatusCode = 404;
                 return View();
@@ -336,7 +335,8 @@ namespace MyBlog.Controllers
                 .Where(
                 post => post.Slug.Contains(query) ||
                 post.Title.Contains(query) ||
-                post.Body.Contains(query)
+                post.Body.Contains(query) ||
+                post.Comments.Any(p => p.Body == query)
                 )
                 .Select(p => new PostDetails
                 {
